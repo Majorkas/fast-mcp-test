@@ -20,6 +20,7 @@ def add(a: int , b: int) -> int:
 
 @mcp.tool
 def average(list : list) -> int:
+    """Calculates the average of a list of int"""
     return mean(list)
 
 if __name__ == "__main__":
