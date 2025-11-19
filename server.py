@@ -1,4 +1,5 @@
 from fastmcp import FastMCP
+from statistics import mean
 
 mcp = FastMCP("echo-server", version="2025-03-26")
 
@@ -16,6 +17,10 @@ def word_count(text: str) -> int:
 def add(a: int , b: int) -> int:
     """adds two int together"""
     return a + b
+
+@mcp.tool
+def average(list : list) -> int:
+    return mean(list)
 
 if __name__ == "__main__":
     mcp.run()  # Use stdio transport for gateway integration
