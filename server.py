@@ -19,7 +19,7 @@ def add(a: int , b: int) -> int:
     return a + b
 
 @mcp.tool
-def average(list : list) -> int:
+def average(list : list) -> float:
     """Calculates the average of a list of int"""
     return mean(list)
 
