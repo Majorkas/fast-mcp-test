@@ -19,9 +19,14 @@ def add(a: int , b: int) -> int:
     return a + b
 
 @mcp.tool
-def average(list : list) -> float:
+def average(list : list[int]) -> float:
     """Calculates the average of a list of int"""
     return mean(list)
+
+@mcp.tool
+def add_multiple(list : list[int]) -> int:
+    """adds a list of int together"""
+    return sum(list)
 
 if __name__ == "__main__":
     mcp.run()  # Use stdio transport for gateway integration
