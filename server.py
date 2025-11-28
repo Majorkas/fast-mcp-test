@@ -1,5 +1,7 @@
 from fastmcp import FastMCP
 from statistics import mean
+import operator
+from duckduckgo_search import DDGS
 
 mcp = FastMCP("echo-server", version="2025-03-26")
 
@@ -14,19 +16,34 @@ def word_count(text: str) -> int:
     return len(text.split())
 
 @mcp.tool
-def add(a: int , b: int) -> int:
-    """adds two int together"""
-    return a + b
+def math(a: float, b: float, op: str) -> float:
+    """Perform mathematical operations. Operator can be: +, -, *, /, //, %, **"""
+    ops = {
+        '+': operator.add,
+        '-': operator.sub,
+        '*': operator.mul,
+        '/': operator.truediv,
+        '//': operator.floordiv,
+        '%': operator.mod,
+        '**': operator.pow
+    }
+
+    if op not in ops:
+        raise ValueError(f"Invalid operator: {op}. Use: +, -, *, /, //, %, **")
+
+    return ops[op](a, b)
 
 @mcp.tool
-def average(list : list[int]) -> float:
-    """Calculates the average of a list of int"""
-    return mean(list)
+def web_search(query: str, max_results: int = 5) -> str:
+    """Search the web using DuckDuckGo."""
+    with DDGS() as ddgs:
+        results = list(ddgs.text(query, max_results=max_results))
 
-@mcp.tool
-def add_multiple(list : list[int]) -> int:
-    """adds a list of int together"""
-    return sum(list)
+    output = []
+    for result in results:
+        output.append(f"Title: {result['title']}\nURL: {result['href']}\nSnippet: {result['body']}\n")
+
+    return "\n".join(output)
 
 if __name__ == "__main__":
     mcp.run()  # Use stdio transport for gateway integration
